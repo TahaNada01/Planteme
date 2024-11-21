@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
-const path = require('path');
-const { getPlantNameByImage } = require('./trefleApi');  // Utilisation du bon chemin relatif
+const fetch = require('node-fetch');  // Nous avons besoin de fetch pour effectuer la requête HTTP
+const FormData = require('form-data');  // Nous utiliserons FormData pour envoyer l'image à l'API Plant.id
 
 const app = express();
 const port = 3001;
@@ -10,16 +10,47 @@ const port = 3001;
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
+// Clé API de Plant.id
+const apiKey = 'HWXzNbxYVPAJw3sCwX4uEIRRfgBrVYkuTIE4NHgfwyhbawAvOY';
+
+// Fonction pour identifier la plante via l'API Plant.id
+const getPlantNameByImage = async (imageBuffer) => {
+  try {
+    // Créer un objet FormData et y ajouter l'image
+    const formData = new FormData();
+    formData.append('image', imageBuffer, 'image.jpg');
+
+    // Appel à l'API Plant.id pour identifier l'image
+    const response = await fetch('https://plant.id/api/v3/identify', {
+      method: 'POST',
+      headers: {
+        'Api-Key': apiKey,
+      },
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (result.suggestions && result.suggestions.length > 0) {
+      return result.suggestions[0].plant_name;  // Retourne le nom de la plante
+    } else {
+      throw new Error('Plante non trouvée');
+    }
+  } catch (error) {
+    console.error('Erreur lors de l\'identification de la plante:', error);
+    throw new Error('Erreur de traitement de l\'image');
+  }
+};
+
 // Route pour identifier la plante
 app.post('/identify', upload.single('image'), async (req, res) => {
   try {
     const imageBuffer = req.file.buffer; // L'image reçue dans le formulaire
-    // Si vous avez besoin d'envoyer cette image au service d'API, vous pouvez le faire ici
-    const plantName = await getPlantNameByImage(imageBuffer);
+    const plantName = await getPlantNameByImage(imageBuffer); // Utiliser l'API Plant.id
     res.json({ plantName });
   } catch (error) {
     console.error('Erreur lors de l\'identification de la plante:', error);
-    res.status(500).json({ error: 'Erreur lors du traitement de l\'image' });
+    res.status(500).json({ error: error.message });
   }
 });
 
