@@ -2,6 +2,8 @@ const express = require('express');
 const multer = require('multer');
 const fetch = require('node-fetch');  // Nous avons besoin de fetch pour effectuer la requête HTTP
 const FormData = require('form-data');  // Nous utiliserons FormData pour envoyer l'image à l'API Plant.id
+const fetch = require('node-fetch');
+
 
 const app = express();
 const port = 3001;
