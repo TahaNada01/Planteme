@@ -11,7 +11,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // Clé API de Plant.id
-const apiKey = 'HWXzNbxYVPAJw3sCwX4uEIRRfgBrVYkuTIE4NHgfwyhbawAvOY';
+const apiKey = '5s9WrZvboAPO7LMC1aZime9x9k8MWgcBHgvGE2Bmh1L0x2i9B9';
 
 // Fonction pour identifier la plante via l'API Plant.id
 const getPlantNameByImage = async (imageBuffer) => {
