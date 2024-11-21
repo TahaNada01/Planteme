@@ -13,29 +13,32 @@ const plantIdApi = axios.create({
 
 const getPlantNameByImage = async (imageBuffer) => {
   try {
-    // Préparation des données à envoyer
+    // Créer un objet FormData et y ajouter l'image
     const formData = new FormData();
-    formData.append('images', imageBuffer, 'image.jpg'); // Ajoute l'image au formulaire
+    formData.append('image', imageBuffer, 'image.jpg');
 
-    // Optionnel : Ajoutez des données supplémentaires si nécessaire
-    formData.append('organs', 'leaf'); // Exemple : indique que c'est une feuille
-    formData.append('include-related-images', 'true');
-
-    // Requête POST vers l'API
-    const response = await plantIdApi.post('/identify', formData, {
-      headers: formData.getHeaders(), // Ajoute les en-têtes nécessaires pour le FormData
+    // Appel à l'API Plant.id pour identifier l'image
+    const response = await fetch('https://plant.id/api/v3/identify', {
+      method: 'POST',
+      headers: {
+        'Api-Key': apiKey,
+      },
+      body: formData,
     });
 
-    // Traitement de la réponse
-    if (response.data.suggestions && response.data.suggestions.length > 0) {
-      return response.data.suggestions[0].plant_name; // Retourne le nom de la plante
+    const result = await response.json();
+
+    if (result.suggestions && result.suggestions.length > 0) {
+      return result.suggestions[0].plant_name;  // Retourne le nom de la plante
+    } else {
+      throw new Error('Plante non trouvée');
     }
-    return null; // Aucune plante trouvée
   } catch (error) {
-    console.error('Erreur lors de la récupération des données de la plante:', error);
-    return null;
+    console.error('Erreur lors de l\'identification de la plante:', error);
+    throw new Error('Erreur de traitement de l\'image');
   }
 };
+
 
 // Export de la fonction
 module.exports = { getPlantNameByImage };
