@@ -1,3 +1,5 @@
+const FormData = require('form-data');
+
 const axios = require('axios');
 
 const apiKey = 'HWXzNbxYVPAJw3sCwX4uEIRRfgBrVYkuTIE4NHgfwyhbawAvOY'; // Remplacez par votre clé API Plant.id
