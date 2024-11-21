@@ -2,7 +2,7 @@ const FormData = require('form-data');
 
 const axios = require('axios');
 
-const apiKey = '5s9WrZvboAPO7LMC1aZime9x9k8MWgcBHgvGE2Bmh1L0x2i9B9'; // Remplacez par votre clé API Plant.id
+const apiKey = 'N5NZ7GkXrrA9hovh8UN6OjfTYQr2Ygc8RnijDdn8YA9gR9EL4o'; // Remplacez par votre clé API Plant.id
 
 const plantIdApi = axios.create({
   baseURL: 'https://plant.id/api/v2',
