@@ -5,7 +5,7 @@ const axios = require('axios');
 const apiKey = '5s9WrZvboAPO7LMC1aZime9x9k8MWgcBHgvGE2Bmh1L0x2i9B9'; // Remplacez par votre clé API Plant.id
 
 const plantIdApi = axios.create({
-  baseURL: 'https://plant.id/api/v3',
+  baseURL: 'https://plant.id/api/v2',
   headers: {
     'Api-Key': apiKey,
   },
