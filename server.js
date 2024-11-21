@@ -21,7 +21,7 @@ const getPlantNameByImage = async (imageBuffer) => {
     formData.append('image', imageBuffer, 'image.jpg');
 
     // Appel à l'API Plant.id pour identifier l'image
-    const response = await fetch('https://plant.id/api/v3/identify', {
+    const response = await fetch('https://plant.id/api/v2/identify', {
       method: 'POST',
       headers: {
         'Api-Key': apiKey,
